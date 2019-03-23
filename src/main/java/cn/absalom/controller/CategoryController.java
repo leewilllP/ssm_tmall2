@@ -5,6 +5,8 @@ import cn.absalom.service.CategoryService;
 import cn.absalom.util.ImageUtil;
 import cn.absalom.util.Page;
 import cn.absalom.util.UploadedImageFile;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,8 +27,13 @@ public class CategoryController {
     CategoryService categoryService;
     @RequestMapping("admin_category_list")
     public String list(Model model,Page page){
-        List<Category> cs = categoryService.list(page);//list
-        int total = categoryService.total();//带页数
+        /*
+        * PageHelper
+        * */
+        PageHelper.offsetPage(page.getStart(),page.getCount());//指定分页参数
+        List<Category> cs = categoryService.list();//list
+        /*int total = categoryService.total();//带页数*/
+        int total = (int) new PageInfo<>(cs).getTotal();  //通过pageInfo获取总数
         page.setTotal(total);//设置页数
         model.addAttribute("cs",cs);//返回列表
         model.addAttribute("page",page);//返回页数
