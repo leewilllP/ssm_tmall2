@@ -2,6 +2,7 @@ package cn.absalom.service.impl;
 
 import cn.absalom.mapper.CategoryMapper;
 import cn.absalom.pojo.Category;
+import cn.absalom.pojo.CategoryExample;
 import cn.absalom.service.CategoryService;
 import cn.absalom.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +16,23 @@ public class CategoryServiceImpl implements CategoryService{
     CategoryMapper categoryMapper;
     @Override
     public List<Category> list() {
-        return categoryMapper.list();
+        CategoryExample example =new CategoryExample();
+        example.setOrderByClause("id desc");
+        return categoryMapper.selectByExample(example);
     }
+/*int deleteByPrimaryKey(Integer id);
 
+    int insert(Category record);
+
+    int insertSelective(Category record);
+
+    List<Category> selectByExample(CategoryExample example);
+
+    Category selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(Category record);
+
+    int updateByPrimaryKey(Category record);*/
     /*@Override
     public int total() {
         return categoryMapper.total();
@@ -25,21 +40,21 @@ public class CategoryServiceImpl implements CategoryService{
 */
     @Override
     public void add(Category category) {
-        categoryMapper.add(category);
+        categoryMapper.insert(category);
     }
 
     @Override
     public void delete(int id) {
-        categoryMapper.delete(id);
+        categoryMapper.deleteByPrimaryKey(id);
     }
 
     @Override
     public Category get(int id) {
-        return categoryMapper.get(id);
+        return categoryMapper.selectByPrimaryKey(id);
     }
 
     @Override
     public void update(Category category) {
-        categoryMapper.update(category);
+        categoryMapper.updateByPrimaryKeySelective(category);
     }
 }
